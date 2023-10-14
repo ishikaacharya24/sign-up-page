@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        #app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        #left-pane {
+            width: 20%;
+            background-color: #121212;
+            padding: 20px;
+            border-right: 1px solid #333;
+        }
+
+        #right-pane {
+            width: 75%;
+            background-color: #222;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+         }
+           
+         /* this is the header in the right pane at the top section*/
+        #header {
+            /*CHATGPT: same */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /*chatgpt: padding-bottom 24px
+                       padding-left 8px
+                       padding-right 8px
+                       padding-top 24px*/
+            padding: 10px;
+            /*CHATGPT:NOT AVAILABLE*/
+            background-color: #333;
+        }
+
+        #new-chart-btn {
+            width: 70%;
+            padding: 10px;
+            background-color: #464647;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #hide-left-pane-btn {
+            width: 20%;
+            padding: 10px;
+            background-color: #414344;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #existing-chats {
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+/* this is the chat item  in the left pane at the top section*/
+        .chat-item {
+          /*  padding-bottom 4px
+              padding-left 12px
+              padding-right 12px
+              padding-top 4px*/
+            padding: 10px;
+            /*CHATGPT: SAME */
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .chat-item:last-child {
+            border-bottom: none;
+        }
+
+        #floating-buttons {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #333;
+        }
+
+        .floating-button {
+            margin-right: 10px;
+            padding: 10px;
+            background-color: #464748;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+    
+        }
+
+        #message-container {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+ /*this is the input box container in the right pane*/
+        #input-box-container {
+            /*CHATGPT: same */
+            display: flex;
+            /*CHATGPT: NOT AVAILABLE*/
+            align-items: center;
+            /*CHATGPT: padding-bottom 16px
+               padding-left 16px
+               padding-right 48px
+               padding-top 16px*/
+            padding: 10px;
+            /*chatgpt: rgba(0, 0, 0, 0)*/
+            background-color: #333;
+        }
+/*this is the input box container in the right pane*/
+        #input-box {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #444;
+            color: #fff;
+        }
+/**/
+        #send-button {
+            padding: 10px 20pX;
+             margin-left: 10px;
+            background-color: #3f4042;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="app-container">
+       x
+        <div id="left-pane">
+            <div id="header">
+                <button id="new-chart-btn"> New Chart</button>
+                <button id="hide-left-pane-btn"> &#9776;</button>
+            </div>
+            <div id="existing-chats">
+                <!-- Dummy chat items will be added here using JavaScript -->
+            </div>
+        </div>
+        <div id="right-pane">
+            <div id="floating-buttons">
+                <button class="floating-button">GPT-3.5</button>
+                <button class="floating-button">GPT-4</button>
+            </div>
+            <div id="message-container">
+                <!-- Chat messages will be displayed here using JavaScript -->
+            </div>
+            <div id="input-box-container">
+                <input type="text" id="input-box" placeholder="send your message...">
+                <button id="send-button">></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code for adding dummy chats, creating new charts, and displaying messages
+        const existingChats = document.getElementById("existing-chats");
+        const messageContainer = document.getElementById("message-container");
+        const newChartBtn = document.getElementById("new-chart-btn");
+        const inputBox = document.getElementById("input-box");
+        const sendButton = document.getElementById("send-button");
+
+        // Dummy chat data
+        const dummyChats = [
+            { name: "User 1", message: "Hello!" },
+            { name: "User 2", message: "Hi there!" },
+            { name: "User 1", message: "How are you doing?" },
+        ];
+
+        // Add dummy chat items
+        dummyChats.forEach((chat) => {
+            const chatItem = document.createElement("div");
+            chatItem.classList.add("chat-item");
+            chatItem.textContent = `${chat.name}: ${chat.message}`;
+            existingChats.appendChild(chatItem);
+        });
+
+        // Function to create a new chart
+        function createNewChart() {
+            const chartName = prompt("Enter chart name:");
+            if (chartName) {
+                const chartItem = document.createElement("div");
+                chartItem.classList.add("chat-item");
+                chartItem.textContent = chartName;
+                existingChats.appendChild(chartItem);
+            }
+        }
+
+        // Event listener for the New Chart button
+        newChartBtn.addEventListener("click", createNewChart);
+
+        // Function to send a message
+        function sendMessage() {
+            const messageText = inputBox.value;
+            if (messageText) {
+                const messageItem = document.createElement("div");
+                messageItem.textContent = messageText;
+                messageContainer.appendChild(messageItem);
+                inputBox.value = "";
+            }
+        }
+
+        // Event listeners for sending messages
+        sendButton.addEventListener("click", sendMessage);
+        inputBox.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+            const hideSidebarButton = document.getElementById("hide-left-pane-btn");
+            const showSidebarButton = document.getElementById("show-sidebar-btn");
+            const leftPane = document.getElementById("left-pane");
+            const rightPane = document.getElementById("right-pane");
+
+        // Function to hide the left sidebar
+        function hideSidebar() {
+          leftPane.classList.add("hidden");
+          showSidebarButton.style.display = "block";
+          rightPane.style.width = "100%";
+}
+
+        // Function to show the left sidebar
+        function showSidebar() {
+        leftPane.classList.remove("hidden");
+        showSidebarButton.style.display = "none";
+        rightPane.style.width = "75%";
+}
+
+      hideSidebarButton.addEventListener("click", hideSidebar);
+      showSidebarButton.addEventListener("click", showSidebar);
+
+        });
+
+    </script>
+</body>
+</html>
